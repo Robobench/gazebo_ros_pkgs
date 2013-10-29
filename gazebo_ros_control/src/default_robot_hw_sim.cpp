@@ -120,8 +120,16 @@ public:
       else if(transmissions[j].actuators_.size() > 1)
       {
         ROS_WARN_STREAM_NAMED("default_robot_hw_sim","Transmission " << transmissions[j].name_
-          << " has more than one actuator. Currently the default robot hardware simulation "
-          << " interface only supports one.");
+            << " has more than one actuator. Currently the default robot hardware simulation "
+            << " interface only supports one.");
+        continue;
+      }
+      else if(transmissions[j].actuators_[0].hardware_interfaces_.size() != 1)
+      {
+        ROS_WARN_STREAM_NAMED("default_robot_hw_sim","Transmission " << transmissions[j].name_
+            << " has more than one hardware interface for actuator " << transmissions[j].actuators_[0].name_
+            << ". Currently the default robot hardware simulation "
+            << " interface only supports one.");
         continue;
       }
 
@@ -133,7 +141,7 @@ public:
       joint_effort_command_[j] = 0.0;
       joint_velocity_command_[j] = 0.0;
 
-      const std::string& hardware_interface = transmissions[j].actuators_[0].hardware_interface_;
+      const std::string& hardware_interface = transmissions[j].actuators_[0].hardware_interfaces_[0];
 
       // Debug
       ROS_DEBUG_STREAM_NAMED("default_robot_hw_sim","Loading joint '" << joint_names_[j]
