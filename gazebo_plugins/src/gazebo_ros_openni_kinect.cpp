@@ -151,7 +151,9 @@ void GazeboRosOpenniKinect::PointCloudDisconnect()
 {
   this->point_cloud_connect_count_--;
   (*this->image_connect_count_)--;
-  if (this->point_cloud_connect_count_ <= 0)
+  if (this->point_cloud_connect_count_ <= 0 &&
+      this->depth_image_connect_count_ <= 0 &&
+      (*this->image_connect_count_) <= 0)
     this->parentSensor->SetActive(false);
 }
 
